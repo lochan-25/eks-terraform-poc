@@ -32,6 +32,24 @@ module "vpc" {
 
   map_public_ip_on_launch = true
 
+
+  public_subnet_tags = {
+
+    "kubernetes.io/role/elb" = "1"
+
+    "kubernetes.io/cluster/demo-eks" = "shared"
+
+  }
+
+
+  private_subnet_tags = {
+
+    "kubernetes.io/role/internal-elb" = "1"
+
+    "kubernetes.io/cluster/demo-eks" = "shared"
+
+  }
+
 }
 
 
@@ -48,7 +66,6 @@ module "eks" {
 
   vpc_id = module.vpc.vpc_id
 
-  
   subnet_ids = module.vpc.public_subnets
 
   enable_cluster_creator_admin_permissions = true
@@ -78,6 +95,6 @@ module "eks" {
 
 output "cluster_name" {
 
- value = module.eks.cluster_name
+  value = module.eks.cluster_name
 
 }
