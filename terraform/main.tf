@@ -46,7 +46,7 @@ module "eks" {
 
     default = {
 
-      instance_types = ["t3.small"]
+      instance_types = ["t3.micro"]
 
       min_size = 1
 
