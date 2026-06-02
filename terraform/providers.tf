@@ -2,11 +2,11 @@ terraform {
 
  cloud {
 
-   organization="my-org-12345"
+   organization = "my-org-12345"
 
    workspaces {
 
-      name="eks-cluster"
+     name = "eks-cluster"
 
    }
 
@@ -14,9 +14,11 @@ terraform {
 
  required_providers {
 
-   aws={
+   aws = {
 
-      source="hashicorp/aws"
+     source = "hashicorp/aws"
+
+     version = "~> 5.0"
 
    }
 
@@ -26,6 +28,6 @@ terraform {
 
 provider "aws" {
 
- region="us-east-1"
+ region = "us-east-1"
 
 }
