@@ -2,7 +2,7 @@ terraform {
 
  cloud {
 
-   organization="YOUR_ORG"
+   organization="my-org-12345"
 
    workspaces {
 
