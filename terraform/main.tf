@@ -30,6 +30,8 @@ module "vpc" {
 
   enable_dns_support = true
 
+  map_public_ip_on_launch = true
+
 }
 
 
