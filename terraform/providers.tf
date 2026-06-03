@@ -1,33 +1,23 @@
 terraform {
 
-  cloud {
+ required_version=">=1.5"
 
-    organization = "my-org-12345"
+ required_providers {
 
-    workspaces {
+   aws={
 
-      name = "eks-cluster"
+    source="hashicorp/aws"
 
-    }
+    version="~>6.0"
 
-  }
+   }
 
-  required_providers {
-
-    aws = {
-
-      source  = "hashicorp/aws"
-
-      version = "~> 5.0"
-
-    }
-
-  }
+ }
 
 }
 
 provider "aws" {
 
-  region = "us-east-1"
+ region="us-east-1"
 
 }
