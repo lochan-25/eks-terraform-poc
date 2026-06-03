@@ -1,5 +1,3 @@
-data "aws_caller_identity" "current" {}
-
 module "vpc" {
 
   source  = "terraform-aws-modules/vpc/aws"
@@ -34,6 +32,7 @@ module "vpc" {
 
   map_public_ip_on_launch = true
 
+
   public_subnet_tags = {
 
     "kubernetes.io/role/elb" = "1"
@@ -41,6 +40,7 @@ module "vpc" {
     "kubernetes.io/cluster/demo-eks" = "shared"
 
   }
+
 
   private_subnet_tags = {
 
@@ -62,7 +62,7 @@ module "eks" {
 
   name = "demo-eks"
 
-  kubernetes_version = "1.31"
+  kubernetes_version = "1.30"
 
   enable_cluster_creator_admin_permissions = true
 
@@ -71,38 +71,11 @@ module "eks" {
   subnet_ids = module.vpc.public_subnets
 
 
-  access_entries = {
-
-    admin = {
-
-      principal_arn = data.aws_caller_identity.current.arn
-
-      policy_associations = {
-
-        admin = {
-
-          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-
-          access_scope = {
-
-            type = "cluster"
-
-          }
-
-        }
-
-      }
-
-    }
-
-  }
-
-
   eks_managed_node_groups = {
 
     default = {
 
-      instance_types = ["t3.small"]
+      instance_types = ["t3.medium"]
 
       min_size = 1
 
@@ -110,7 +83,7 @@ module "eks" {
 
       desired_size = 1
 
-      ami_type = "AL2023_x86_64_STANDARD"
+      ami_type = "AL2_x86_64"
 
       subnet_ids = module.vpc.public_subnets
 
