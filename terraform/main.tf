@@ -1,6 +1,7 @@
 module "vpc" {
 
   source  = "terraform-aws-modules/vpc/aws"
+
   version = "~> 6.0"
 
   name = "eks-vpc"
@@ -32,7 +33,6 @@ module "vpc" {
 
   map_public_ip_on_launch = true
 
-
   public_subnet_tags = {
 
     "kubernetes.io/role/elb" = "1"
@@ -40,7 +40,6 @@ module "vpc" {
     "kubernetes.io/cluster/demo-eks" = "shared"
 
   }
-
 
   private_subnet_tags = {
 
@@ -51,7 +50,6 @@ module "vpc" {
   }
 
 }
-
 
 
 module "eks" {
@@ -68,8 +66,14 @@ module "eks" {
 
   vpc_id = module.vpc.vpc_id
 
-  subnet_ids = module.vpc.public_subnets
 
+  subnet_ids = concat(
+
+    module.vpc.public_subnets,
+
+    module.vpc.private_subnets
+
+  )
 
   eks_managed_node_groups = {
 
@@ -85,7 +89,7 @@ module "eks" {
 
       ami_type = "AL2_x86_64"
 
-      subnet_ids = module.vpc.public_subnets
+      subnet_ids = module.vpc.private_subnets
 
     }
 
@@ -93,10 +97,14 @@ module "eks" {
 
 }
 
-
-
 output "cluster_name" {
 
-  value = module.eks.cluster_name
+ value = module.eks.cluster_name
+
+}
+
+output "cluster_endpoint" {
+
+ value = module.eks.cluster_endpoint
 
 }
